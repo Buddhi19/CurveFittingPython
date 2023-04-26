@@ -1,4 +1,4 @@
-name: nbval-example
+name: JupiterTests
 
 on:
   # Use a manual trigger
