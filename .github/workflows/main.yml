@@ -1,0 +1,44 @@
+name: nbval-example
+
+on:
+  # Use a manual trigger
+  workflow_dispatch
+
+jobs:
+
+  nbval-demo:
+    runs-on: ubuntu-latest
+
+    # Specify we want to run the tests inside a particular containerised environment
+    container:
+      image: ouvocl/vce-tm351-monolith
+
+    # Define the action steps
+    steps:
+
+    # Checkout the desired branch
+    - uses: actions/checkout@master
+
+    # Install any additional requirements into the environment
+    - name: Install nbval (TH edition)
+      run: |
+        python3 -m pip install --upgrade https://github.com/ouseful-PR/nbval/archive/table-test.zip
+
+    # Ensure that required services are running
+    - name: Restart postgres
+      run: |
+        sudo service postgresql restart
+
+    # Explicitly start an application required for testing
+    - name: Start mongo
+      run: |
+        # The environment variable is already defined in the container
+        sudo mongod --fork --logpath /dev/stdout --dbpath ${MONGO_DB_PATH}
+
+    # Run an installation test notebook
+    - name: TM351 installation test
+      run: |
+        py.test --nbval TM351*.ipynb
+      # The following line means that the action will continue
+      # rather than fail if this step fails
+      continue-on-error: true
