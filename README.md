@@ -1,3 +1,4 @@
+[![nbval-example](https://github.com/Buddhi19/CurveFittingPython/actions/workflows/main.yml/badge.svg)](https://github.com/Buddhi19/CurveFittingPython/actions/workflows/main.yml)
 # CurveFittingPython
 ## Least Square Method
 #### Implementation of Least Square Method.
